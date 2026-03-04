@@ -1,0 +1,60 @@
+# CD — Deploy to Development environment
+#
+# Triggered automatically when a PR is merged into 'dev'.
+#
+# Flow:
+#   push to dev → deploy to Netlify DEV site (no approval required)
+#
+# Required GitHub secrets:
+#   NETLIFY_AUTH_TOKEN      → Your Netlify personal access token
+#   NETLIFY_SITE_ID_DEV     → Site ID of your Netlify "dev" site
+#
+# How to get these:
+#   Token:   Netlify dashboard → User settings → Applications → Personal access tokens
+#   Site ID: Netlify dashboard → Your site → Site configuration → Site details → Site ID
+
+name: Deploy — Development
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy-dev:
+    name: Deploy to Dev
+    runs-on: ubuntu-latest
+    # Targets the 'development' GitHub Environment (no required reviewers)
+    environment:
+      name: development
+      url: ${{ steps.deploy.outputs.deploy-url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro site
+        run: npm run build
+
+      - name: Deploy to Netlify (Dev)
+        id: deploy
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './dist'
+          production-deploy: false # never overwrites production
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: 'Deploy from dev branch — ${{ github.sha }}'
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEV }}

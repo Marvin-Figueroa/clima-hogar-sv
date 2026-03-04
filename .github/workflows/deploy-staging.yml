@@ -1,0 +1,70 @@
+# CD — Promote to Staging environment
+#
+# Triggered MANUALLY via GitHub Actions UI (workflow_dispatch).
+# This is the "promotion gate" from dev → staging.
+#
+# Flow:
+#   Manual trigger → waits for reviewer approval (GitHub Environment protection)
+#   → builds the latest 'dev' branch → deploys to Netlify STAGING site
+#
+# Required GitHub secrets:
+#   NETLIFY_AUTH_TOKEN         → Your Netlify personal access token (same as dev)
+#   NETLIFY_SITE_ID_STAGING    → Site ID of your Netlify "staging" site
+#
+# Required GitHub Environment setup (do this in repo Settings → Environments):
+#   1. Create environment named exactly: staging
+#   2. Add "Required reviewers" — add yourself or your team
+#   3. Optionally: restrict to 'dev' branch only
+
+name: Deploy — Staging
+
+on:
+  # Manual promotion gate: triggered from Actions tab in GitHub UI
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for promoting to staging'
+        required: true
+        default: 'Routine promotion from dev'
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    # Targets the 'staging' GitHub Environment.
+    # If you add required reviewers there, this job will PAUSE and wait for approval.
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.deploy-url }}
+
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev # always promotes from dev
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Astro site
+        run: npm run build
+
+      - name: Deploy to Netlify (Staging)
+        id: deploy
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './dist'
+          production-deploy: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: 'Staging promotion — ${{ github.actor }}: ${{ github.event.inputs.reason }}'
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STAGING }}
