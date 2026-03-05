@@ -6,36 +6,41 @@
   Defined via @theme so Tailwind v4 generates utilities automatically.
 
   Usage examples:
-    bg-navy          → background: #0B2D72
-    text-cyan        → color: #0AC4E0
+    bg-navy          → background: #002147  (Oxford Blue)
+    text-cyan        → color: #50C8FF       (Sky Blue)
+    bg-bone          → background: #F5F2EB  (off-white warm)
     font-display     → font-family: Sora
     font-body        → font-family: Nunito Sans
 */
 @theme {
   /* ── Brand colors ─────────────────────────────────────────────── */
-  --color-navy: #0b2d72;
-  /* Primary — authority, trust */
-  --color-navy-light: #1a3f8f;
+  --color-navy: #002147;
+  /* Primary — Oxford Blue, authority + depth */
+  --color-navy-light: #003370;
   /* Hover state for navy */
-  --color-navy-dark: #071e4d;
+  --color-navy-dark: #001430;
   /* Active / pressed state */
 
-  --color-blue: #0992c2;
-  /* Secondary — professional, reliable */
-  --color-blue-light: #2ba8d4;
+  --color-blue: #1a8fd1;
+  /* Secondary — bridge between navy and cyan */
+  --color-blue-light: #3aaee0;
   /* Hover state */
-  --color-blue-dark: #076e94;
+  --color-blue-dark: #1270a8;
   /* Active state */
 
-  --color-cyan: #0ac4e0;
-  /* Accent — energy, cool air */
-  --color-cyan-light: #2dd4ed;
+  --color-cyan: #50c8ff;
+  /* Accent — Sky Blue, energy + cool air */
+  --color-cyan-light: #74d8ff;
   /* Hover / highlight */
-  --color-cyan-dark: #0899b0;
+  --color-cyan-dark: #28b4f0;
   /* Active state */
 
   /* ── Neutral scale ────────────────────────────────────────────── */
   --color-white: #ffffff;
+  --color-bone: #f5f2eb;
+  /* Warm off-white — page backgrounds, cards */
+  --color-bone-dark: #ede9df;
+  /* Slightly deeper bone for borders / dividers */
   --color-gray-50: #f8fafc;
   --color-gray-100: #f1f5f9;
   --color-gray-200: #e2e8f0;
@@ -90,7 +95,7 @@
   /* buttons */
 
   /* ── Shadows ──────────────────────────────────────────────────── */
-  --shadow-card: 0 4px 24px 0 rgb(11 45 114 / 0.08);
-  --shadow-card-hover: 0 8px 40px 0 rgb(11 45 114 / 0.16);
-  --shadow-btn: 0 2px 12px 0 rgb(10 196 224 / 0.35);
+  --shadow-card: 0 4px 24px 0 rgb(0 33 71 / 0.08);
+  --shadow-card-hover: 0 8px 40px 0 rgb(0 33 71 / 0.16);
+  --shadow-btn: 0 2px 12px 0 rgb(80 200 255 / 0.3);
 }
