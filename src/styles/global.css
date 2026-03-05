@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,400&display=swap');
+@import 'tailwindcss';
+
+/*
+  Design tokens — Clima Hogar SV
+  Defined via @theme so Tailwind v4 generates utilities automatically.
+
+  Usage examples:
+    bg-navy          → background: #002147  (Oxford Blue)
+    text-cyan        → color: #50C8FF       (Sky Blue)
+    bg-bone          → background: #F5F2EB  (off-white warm)
+    font-display     → font-family: Sora
+    font-body        → font-family: Nunito Sans
+*/
+@theme {
+  /* ── Brand colors ─────────────────────────────────────────────── */
+  --color-navy: #002147;
+  /* Primary — Oxford Blue, authority + depth */
+  --color-navy-light: #003370;
+  /* Hover state for navy */
+  --color-navy-dark: #001430;
+  /* Active / pressed state */
+
+  --color-blue: #1a8fd1;
+  /* Secondary — bridge between navy and cyan */
+  --color-blue-light: #3aaee0;
+  /* Hover state */
+  --color-blue-dark: #1270a8;
+  /* Active state */
+
+  --color-cyan: #50c8ff;
+  /* Accent — Sky Blue, energy + cool air */
+  --color-cyan-light: #74d8ff;
+  /* Hover / highlight */
+  --color-cyan-dark: #28b4f0;
+  /* Active state */
+
+  /* ── Neutral scale ────────────────────────────────────────────── */
+  --color-white: #ffffff;
+  --color-bone: #f5f2eb;
+  /* Warm off-white — page backgrounds, cards */
+  --color-bone-dark: #ede9df;
+  /* Slightly deeper bone for borders / dividers */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* ── Typography ───────────────────────────────────────────────── */
+  --font-display: 'Sora', sans-serif;
+  /* Headlines, CTAs, nav */
+  --font-body: 'Nunito Sans', sans-serif;
+  /* Body text, labels, forms */
+
+  /* ── Font sizes (major third scale — 1.25x) ──────────────────── */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
+  --text-4xl: 2.25rem;
+  /* 36px */
+  --text-5xl: 3rem;
+  /* 48px */
+  --text-6xl: 3.75rem;
+  /* 60px */
+
+  /* ── Spacing extras ───────────────────────────────────────────── */
+  --spacing-18: 4.5rem;
+  /* gap between nav items */
+  --spacing-88: 22rem;
+  /* sidebar / aside widths */
+  --spacing-128: 32rem;
+  /* hero max-content widths */
+
+  /* ── Border radius ────────────────────────────────────────────── */
+  --radius-card: 0.75rem;
+  /* service cards */
+  --radius-btn: 0.5rem;
+  /* buttons */
+
+  /* ── Shadows ──────────────────────────────────────────────────── */
+  --shadow-card: 0 4px 24px 0 rgb(0 33 71 / 0.08);
+  --shadow-card-hover: 0 8px 40px 0 rgb(0 33 71 / 0.16);
+  --shadow-btn: 0 2px 12px 0 rgb(80 200 255 / 0.3);
+}

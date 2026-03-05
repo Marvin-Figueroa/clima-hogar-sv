@@ -10,16 +10,30 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{astro,ts,js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json,yml,yaml,css}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
-    "astro": "^5.17.1"
+    "@tailwindcss/vite": "^4.2.1",
+    "astro": "^5.17.1",
+    "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^9.39.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1"
   }
