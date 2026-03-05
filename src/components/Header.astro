@@ -1,0 +1,209 @@
+---
+const navLinks = [
+  { label: 'Servicios', href: '#servicios' },
+  { label: '¿Por qué nosotros?', href: '#por-que-nosotros' },
+  { label: 'Galería', href: '#galeria' },
+  { label: 'Quiénes somos', href: '#quienes-somos' },
+  { label: 'Contacto', href: '#contacto' },
+];
+---
+
+<header id="site-header" class="fixed left-0 right-0 top-0 z-50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <nav class="flex h-20 items-center justify-between" aria-label="Navegación principal">
+      <!-- ── Logo ─────────────────────────────────────────────────── -->
+      <a href="/" class="group flex items-center gap-3" aria-label="Clima Hogar SV — Inicio">
+        <img
+          src="/logo.png"
+          alt="Clima Hogar SV"
+          width="44"
+          height="44"
+          class="h-11 w-auto transition-transform duration-300 group-hover:scale-105"
+        />
+        <div class="flex flex-col leading-none">
+          <span class="font-display text-base font-bold tracking-tight text-white">Clima Hogar</span
+          >
+        </div>
+      </a>
+
+      <!-- ── Desktop nav ───────────────────────────────────────────── -->
+      <ul class="hidden items-center gap-7 lg:flex" role="list">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="group flex flex-col font-body text-sm font-medium text-white transition-colors duration-200 hover:text-white"
+              >
+                <span>{link.label}</span>
+                <span class="mt-0.5 block h-0.5 w-0 bg-cyan transition-all duration-300 group-hover:w-full" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- ── Desktop CTA ───────────────────────────────────────────── -->
+      <a
+        href="#cotizacion"
+        class="cta-btn hidden items-center gap-2 rounded-full bg-white px-5 py-2.5 font-display text-sm font-semibold text-navy transition-all duration-300 hover:-translate-y-0.5 lg:inline-flex"
+      >
+        Cotización Gratis
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="transition-transform duration-300 group-hover:translate-x-0.5"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+
+      <!-- ── Hamburger (mobile) ────────────────────────────────────── -->
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="flex flex-col gap-1.5 rounded-md p-2 transition-colors duration-200 hover:bg-white/10 lg:hidden"
+      >
+        <span
+          id="ham-line-1"
+          class="block h-0.5 w-6 origin-center bg-white transition-all duration-300"></span>
+        <span
+          id="ham-line-2"
+          class="block h-0.5 w-6 origin-center bg-white transition-all duration-300"></span>
+        <span
+          id="ham-line-3"
+          class="block h-0.5 w-6 origin-center bg-white transition-all duration-300"></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ── Mobile menu ─────────────────────────────────────────────── -->
+  <div id="mobile-menu" aria-label="Menú móvil" class="hidden border-t border-white/10 lg:hidden">
+    <div class="mx-auto max-w-7xl px-4 py-5">
+      <ul class="flex flex-col" role="list">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="mobile-link flex items-center justify-between border-b border-white/10 py-4 font-body font-medium text-white/80 transition-colors duration-200 hover:text-cyan"
+              >
+                {link.label}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  class="opacity-30"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href="#cotizacion"
+        class="mobile-link mt-5 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 font-display font-semibold text-navy transition-all duration-200 hover:bg-gray-100"
+      >
+        Cotización Gratis
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Header states — scroll-aware background */
+  #site-header {
+    background: color-mix(in srgb, var(--color-navy) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  #site-header.scrolled {
+    background: var(--color-navy);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.25);
+  }
+
+  /* Mobile menu background inherits from header */
+  #mobile-menu {
+    background: var(--color-navy);
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const menuToggle = document.getElementById('menu-toggle')!;
+  const mobileMenu = document.getElementById('mobile-menu')!;
+  const line1 = document.getElementById('ham-line-1')!;
+  const line2 = document.getElementById('ham-line-2')!;
+  const line3 = document.getElementById('ham-line-3')!;
+
+  // ── Scroll: solidify header ──────────────────────────────────────
+  function onScroll() {
+    header.classList.toggle('scrolled', window.scrollY > 30);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ── Mobile menu ──────────────────────────────────────────────────
+  function closeMenu() {
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+    mobileMenu.classList.add('hidden');
+    line1.style.transform = '';
+    line2.style.opacity = '';
+    line3.style.transform = '';
+  }
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    if (isOpen) {
+      closeMenu();
+    } else {
+      menuToggle.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-label', 'Cerrar menú de navegación');
+      mobileMenu.classList.remove('hidden');
+      // Animate hamburger → X
+      // Each line is 2px tall, gap-1.5 = 6px → center-to-center = 8px
+      line1.style.transform = 'translateY(8px) rotate(45deg)';
+      line2.style.opacity = '0';
+      line3.style.transform = 'translateY(-8px) rotate(-45deg)';
+    }
+  });
+
+  // Close on mobile link click
+  mobileMenu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+    }
+  });
+</script>
