@@ -235,11 +235,12 @@ El workflow tiene dos jobs encadenados:
 4. Setup Node.js + npm ci + astro build
 5. Deploy a Netlify PROD       ← usando NETLIFY_SITE_ID_PROD
    production-deploy: true     ← actualiza el dominio de producción en Netlify
-6. Auto-merge release → main   ← espejo exacto de lo que está en prod
-7. Auto-merge release → dev    ← trae los bugfixes del release de vuelta a integración
+6. Genera token del GitHub App ← clima-hogar-deploy-bot (bypass de branch protection)
+7. Auto-merge release → main   ← espejo exacto de lo que está en prod (--no-ff)
+8. Auto-merge release → dev    ← trae los bugfixes del release de vuelta a integración (--no-ff)
 ```
 
-> **Nota:** Para que los auto-merges funcionen, activa **Settings → Actions → General → Workflow permissions: "Read and write permissions"** y en la branch protection de `main` y `dev` agrega `github-actions[bot]` como actor que puede hacer bypass.
+> **Nota:** Los auto-merges usan un **GitHub App dedicado** (`clima-hogar-deploy-bot`) que tiene permisos de bypass en los rulesets de `main` y `dev`. El workflow genera un token efímero del App para autenticarse y poder pushear directamente a ramas protegidas. Los secrets `DEPLOY_APP_ID` y `DEPLOY_APP_PRIVATE_KEY` deben estar configurados en el repositorio (ver sección de Secrets).
 
 ---
 
@@ -253,6 +254,8 @@ Configurados en: **GitHub repo → Settings → Secrets and variables → Action
 | `NETLIFY_SITE_ID_DEV`     | Site ID del sitio Netlify del ambiente development                |
 | `NETLIFY_SITE_ID_STAGING` | Site ID del sitio Netlify del ambiente staging                    |
 | `NETLIFY_SITE_ID_PROD`    | Site ID del sitio Netlify del ambiente production                 |
+| `DEPLOY_APP_ID`           | App ID del GitHub App `clima-hogar-deploy-bot`                    |
+| `DEPLOY_APP_PRIVATE_KEY`  | Llave privada (.pem) del GitHub App para generar tokens efímeros  |
 
 Los secrets nunca aparecen en los logs de los workflows — GitHub los enmascara automáticamente.
 
