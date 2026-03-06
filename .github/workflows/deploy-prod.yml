@@ -101,12 +101,21 @@ jobs:
       url: ${{ steps.deploy.outputs.deploy-url }}
 
     steps:
+      # Must come first — checkout will configure git credentials with this token,
+      # so all subsequent git operations (including push) authenticate as the App.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DEPLOY_APP_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+
       - name: Checkout release branch
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.release_branch }}
           fetch-depth: 0 # full history needed for the merge steps
-          persist-credentials: false # we provide our own token via the GitHub App
+          token: ${{ steps.app-token.outputs.token }} # configures git to auth as the App
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -134,31 +143,20 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
 
-      # Generate a token from the GitHub App — this token can bypass branch
-      # protection rules because the App is listed as a bypass actor.
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.DEPLOY_APP_ID }}
-          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
-
       # Merge release branch → main (production record)
       # Merge release branch → dev  (bring release fixes back to integration)
+      # git push uses the App token configured by the checkout step above.
       - name: Sync main and dev with release branch
-        env:
-          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           git config user.name "clima-hogar-deploy-bot[bot]"
           git config user.email "clima-hogar-deploy-bot[bot]@users.noreply.github.com"
 
           RELEASE="${{ inputs.release_branch }}"
-          REMOTE="https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git"
 
           git checkout main
           git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE into main after production deploy"
-          git push "$REMOTE" main
+          git push origin main
 
           git checkout dev
           git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE back into dev after production deploy"
-          git push "$REMOTE" dev
+          git push origin dev
