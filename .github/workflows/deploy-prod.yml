@@ -106,6 +106,7 @@ jobs:
         with:
           ref: ${{ inputs.release_branch }}
           fetch-depth: 0 # full history needed for the merge steps
+          persist-credentials: false # we provide our own token via the GitHub App
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -148,10 +149,6 @@ jobs:
         env:
           APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          # Remove the default credential helper set by actions/checkout
-          # so it doesn't override our App token with the GITHUB_TOKEN.
-          git config --unset-all http.https://github.com/.extraheader || true
-
           git config user.name "clima-hogar-deploy-bot[bot]"
           git config user.email "clima-hogar-deploy-bot[bot]@users.noreply.github.com"
 
