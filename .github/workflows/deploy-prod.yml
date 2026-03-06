@@ -145,12 +145,18 @@ jobs:
       # Merge release branch → main (production record)
       # Merge release branch → dev  (bring release fixes back to integration)
       - name: Sync main and dev with release branch
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
+          # Remove the default credential helper set by actions/checkout
+          # so it doesn't override our App token with the GITHUB_TOKEN.
+          git config --unset-all http.https://github.com/.extraheader || true
+
           git config user.name "clima-hogar-deploy-bot[bot]"
           git config user.email "clima-hogar-deploy-bot[bot]@users.noreply.github.com"
 
           RELEASE="${{ inputs.release_branch }}"
-          REMOTE="https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git"
+          REMOTE="https://x-access-token:${APP_TOKEN}@github.com/${{ github.repository }}.git"
 
           git checkout main
           git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE into main after production deploy"
