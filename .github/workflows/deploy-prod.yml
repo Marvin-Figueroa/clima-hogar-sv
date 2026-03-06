@@ -1,43 +1,121 @@
 # CD — Deploy to Production
 #
-# Triggered automatically when code is merged (pushed) to 'main'.
-# The actual deploy step PAUSES and requires manual approval before running,
-# thanks to the 'production' GitHub Environment protection rule.
+# Triggered MANUALLY via GitHub Actions UI (workflow_dispatch).
+# You must specify which release branch to promote (e.g. release/v1.2.0).
+#
+# Staging is a REQUIRED gate — production will refuse to deploy if the HEAD
+# of the specified release branch has not already been deployed to staging.
 #
 # Flow:
-#   merge PR into main → workflow starts → deploy-prod job targets 'production'
-#   environment → GitHub PAUSES for reviewer approval → approved → deploys to Netlify PROD
+#   Manual trigger (with release_branch input)
+#   → verify-staging: checks GitHub Deployments API for that branch's HEAD SHA
+#   → confirmed → deploy-prod targets 'production' environment
+#   → GitHub PAUSES for reviewer approval → approved
+#   → builds release branch → deploys to Netlify PROD
+#   → auto-merges release branch into main  (production record)
+#   → auto-merges release branch into dev   (brings release fixes back)
 #
 # Required GitHub secrets:
-#   NETLIFY_AUTH_TOKEN      → Your Netlify personal access token
-#   NETLIFY_SITE_ID_PROD    → Site ID of your Netlify "production" site
+#   NETLIFY_AUTH_TOKEN       → Your Netlify personal access token
+#   NETLIFY_SITE_ID_PROD     → Site ID of your Netlify "production" site
+#   DEPLOY_APP_ID            → GitHub App ID for the deploy bot
+#   DEPLOY_APP_PRIVATE_KEY   → GitHub App private key (.pem contents)
 #
-# Required GitHub Environment setup (repo Settings → Environments):
-#   1. Create environment named exactly: production
-#   2. Add "Required reviewers" — add yourself or your team
-#   3. Restrict deployments to the 'main' branch only
+# Required GitHub App setup:
+#   1. Create a GitHub App with Contents (rw) + Pull requests (rw) permissions
+#   2. Install it on this repo
+#   3. Add it as bypass actor in the rulesets for 'main' and 'dev'
+#   The App token allows the workflow to push directly to protected branches.
 
 name: Deploy — Production
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: 'Release branch to deploy (e.g. release/v1.2.0)'
+        required: true
+      reason:
+        description: 'Reason for promoting to production'
+        required: true
+        default: 'Routine release promotion'
 
 jobs:
+  # ── Gate: release branch must be deployed to staging first ────────────────
+  verify-staging:
+    name: Verify staging is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check release branch HEAD is deployed to staging
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const releaseBranch = '${{ inputs.release_branch }}';
+
+            // Get HEAD SHA of the release branch
+            const refData = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${releaseBranch}`,
+            });
+            const releaseSha = refData.data.object.sha;
+            core.info(`Release branch: ${releaseBranch}`);
+            core.info(`HEAD SHA: ${releaseSha}`);
+
+            // Fetch recent staging deployments
+            const { data: deployments } = await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              environment: 'staging',
+              per_page: 20,
+            });
+
+            for (const deployment of deployments) {
+              if (deployment.sha !== releaseSha) continue;
+
+              const { data: statuses } = await github.rest.repos.listDeploymentStatuses({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: deployment.id,
+                per_page: 1,
+              });
+
+              if (statuses.length > 0 && statuses[0].state === 'success') {
+                core.info(`✅ ${releaseBranch} HEAD (${releaseSha.slice(0, 7)}) is confirmed deployed to staging.`);
+                return;
+              }
+            }
+
+            core.setFailed(
+              `❌ ${releaseBranch} HEAD (${releaseSha.slice(0, 7)}) has NOT been deployed to staging.\n` +
+              `Push to the release branch (triggers auto-deploy) or run "Deploy — Staging" manually first.`
+            );
+
+  # ── Deploy ─────────────────────────────────────────────────────────────────
   deploy-prod:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    # Targets the 'production' GitHub Environment.
-    # Required reviewers here means: someone must click "Approve" in GitHub
-    # before this job executes.
+    needs: verify-staging
     environment:
       name: production
       url: ${{ steps.deploy.outputs.deploy-url }}
 
     steps:
-      - name: Checkout code
+      # Must come first — checkout will configure git credentials with this token,
+      # so all subsequent git operations (including push) authenticate as the App.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DEPLOY_APP_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+
+      - name: Checkout release branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_branch }}
+          fetch-depth: 0 # full history needed for the merge steps
+          token: ${{ steps.app-token.outputs.token }} # configures git to auth as the App
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -56,11 +134,40 @@ jobs:
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: './dist'
-          production-deploy: true # marks as production deploy in Netlify
+          production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Production deploy — ${{ github.sha }}'
+          deploy-message: 'Production — ${{ inputs.release_branch }} @ ${{ github.sha }}'
           enable-pull-request-comment: false
           enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
+
+      # Merge release branch → main (production record)
+      # Merge release branch → dev  (bring release fixes back to integration)
+      # Uses the GitHub Repos Merge API via the App token — no git push needed,
+      # so credential helper issues are bypassed entirely.
+      - name: Sync main and dev with release branch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const release = '${{ inputs.release_branch }}';
+
+            await github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base: 'main',
+              head: release,
+              commit_message: `chore: merge ${release} into main after production deploy`,
+            });
+            core.info('✅ Merged into main');
+
+            await github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base: 'dev',
+              head: release,
+              commit_message: `chore: merge ${release} back into dev after production deploy`,
+            });
+            core.info('✅ Merged into dev');
