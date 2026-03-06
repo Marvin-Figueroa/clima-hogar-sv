@@ -1,47 +1,61 @@
-# CD — Promote to Staging environment
+# CD — Deploy to Staging environment
 #
-# Triggered MANUALLY via GitHub Actions UI (workflow_dispatch).
-# This is the "promotion gate" from dev → staging.
+# Triggered automatically when code is pushed to any 'release/*' branch.
+# Also triggerable manually for flexibility.
 #
-# Flow:
-#   Manual trigger → waits for reviewer approval (GitHub Environment protection)
-#   → builds the latest 'dev' branch → deploys to Netlify STAGING site
+# In the release-branch flow, 'release/*' is the validation branch — every
+# commit there (features + fixes) auto-deploys here so the team sees the
+# latest state of the release at all times.
+#
+# Flow (auto):
+#   push to release/* → deploy to Netlify STAGING (no approval needed)
+#
+# Flow (manual):
+#   workflow_dispatch with release_branch input → deploy that branch to STAGING
 #
 # Required GitHub secrets:
-#   NETLIFY_AUTH_TOKEN         → Your Netlify personal access token (same as dev)
+#   NETLIFY_AUTH_TOKEN         → Your Netlify personal access token
 #   NETLIFY_SITE_ID_STAGING    → Site ID of your Netlify "staging" site
 #
-# Required GitHub Environment setup (do this in repo Settings → Environments):
+# Required GitHub Environment setup (repo Settings → Environments):
 #   1. Create environment named exactly: staging
-#   2. Add "Required reviewers" — add yourself or your team
-#   3. Optionally: restrict to 'dev' branch only
+#   2. No required reviewers needed — staging is a validation environment,
+#      not a protected one. Speed matters here.
 
 name: Deploy — Staging
 
 on:
-  # Manual promotion gate: triggered from Actions tab in GitHub UI
+  push:
+    branches:
+      - 'release/**'
   workflow_dispatch:
     inputs:
-      reason:
-        description: 'Reason for promoting to staging'
+      release_branch:
+        description: 'Release branch to deploy (e.g. release/v1.2.0)'
         required: true
-        default: 'Routine promotion from dev'
 
 jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    # Targets the 'staging' GitHub Environment.
-    # If you add required reviewers there, this job will PAUSE and wait for approval.
     environment:
       name: staging
       url: ${{ steps.deploy.outputs.deploy-url }}
 
     steps:
-      - name: Checkout dev branch
+      - name: Resolve release branch
+        id: branch
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "ref=${{ inputs.release_branch }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout release branch
         uses: actions/checkout@v4
         with:
-          ref: dev # always promotes from dev
+          ref: ${{ steps.branch.outputs.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -62,9 +76,9 @@ jobs:
           publish-dir: './dist'
           production-deploy: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Staging promotion — ${{ github.actor }}: ${{ github.event.inputs.reason }}'
+          deploy-message: 'Staging — ${{ steps.branch.outputs.ref }} @ ${{ github.sha }}'
           enable-pull-request-comment: false
-          enable-commit-comment: false
+          enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STAGING }}

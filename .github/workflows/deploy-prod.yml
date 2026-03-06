@@ -1,53 +1,107 @@
 # CD — Deploy to Production
 #
 # Triggered MANUALLY via GitHub Actions UI (workflow_dispatch).
-# This is the "promotion gate" from dev → production.
+# You must specify which release branch to promote (e.g. release/v1.2.0).
+#
+# Staging is a REQUIRED gate — production will refuse to deploy if the HEAD
+# of the specified release branch has not already been deployed to staging.
 #
 # Flow:
-#   Manual trigger → GitHub PAUSES for reviewer approval (production environment)
-#   → approved → builds latest 'dev' branch → deploys to Netlify PROD
-#   → auto-merges dev into main as a release record
+#   Manual trigger (with release_branch input)
+#   → verify-staging: checks GitHub Deployments API for that branch's HEAD SHA
+#   → confirmed → deploy-prod targets 'production' environment
+#   → GitHub PAUSES for reviewer approval → approved
+#   → builds release branch → deploys to Netlify PROD
+#   → auto-merges release branch into main  (production record)
+#   → auto-merges release branch into dev   (brings release fixes back)
 #
 # Required GitHub secrets:
 #   NETLIFY_AUTH_TOKEN      → Your Netlify personal access token
 #   NETLIFY_SITE_ID_PROD    → Site ID of your Netlify "production" site
 #
-# Required GitHub Environment setup (repo Settings → Environments):
-#   1. Create environment named exactly: production
-#   2. Add "Required reviewers" — add yourself or your team
-#   3. Remove any branch restriction (no longer needs to be restricted to main)
-#
-# Required repo setting:
+# Required repo settings:
 #   → Settings → Actions → General → Workflow permissions → "Read and write permissions"
-#   This allows the auto-merge step to push to main on your behalf.
+#   → Branch protection on 'main' and 'dev': allow github-actions[bot] to bypass
 
 name: Deploy — Production
 
 on:
   workflow_dispatch:
     inputs:
+      release_branch:
+        description: 'Release branch to deploy (e.g. release/v1.2.0)'
+        required: true
       reason:
         description: 'Reason for promoting to production'
         required: true
-        default: 'Routine promotion from dev'
+        default: 'Routine release promotion'
 
 jobs:
+  # ── Gate: release branch must be deployed to staging first ────────────────
+  verify-staging:
+    name: Verify staging is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check release branch HEAD is deployed to staging
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const releaseBranch = '${{ inputs.release_branch }}';
+
+            // Get HEAD SHA of the release branch
+            const refData = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${releaseBranch}`,
+            });
+            const releaseSha = refData.data.object.sha;
+            core.info(`Release branch: ${releaseBranch}`);
+            core.info(`HEAD SHA: ${releaseSha}`);
+
+            // Fetch recent staging deployments
+            const { data: deployments } = await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              environment: 'staging',
+              per_page: 20,
+            });
+
+            for (const deployment of deployments) {
+              if (deployment.sha !== releaseSha) continue;
+
+              const { data: statuses } = await github.rest.repos.listDeploymentStatuses({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: deployment.id,
+                per_page: 1,
+              });
+
+              if (statuses.length > 0 && statuses[0].state === 'success') {
+                core.info(`✅ ${releaseBranch} HEAD (${releaseSha.slice(0, 7)}) is confirmed deployed to staging.`);
+                return;
+              }
+            }
+
+            core.setFailed(
+              `❌ ${releaseBranch} HEAD (${releaseSha.slice(0, 7)}) has NOT been deployed to staging.\n` +
+              `Push to the release branch (triggers auto-deploy) or run "Deploy — Staging" manually first.`
+            );
+
+  # ── Deploy ─────────────────────────────────────────────────────────────────
   deploy-prod:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    # Targets the 'production' GitHub Environment.
-    # Required reviewers here means: someone must click "Approve" in GitHub
-    # before this job executes.
+    needs: verify-staging
     environment:
       name: production
       url: ${{ steps.deploy.outputs.deploy-url }}
 
     steps:
-      - name: Checkout dev branch
+      - name: Checkout release branch
         uses: actions/checkout@v4
         with:
-          ref: dev # always promotes from dev
-          fetch-depth: 0 # full history needed for the merge step
+          ref: ${{ inputs.release_branch }}
+          fetch-depth: 0 # full history needed for the merge steps
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -66,21 +120,28 @@ jobs:
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: './dist'
-          production-deploy: true # marks as production deploy in Netlify
+          production-deploy: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Production deploy — ${{ github.sha }}'
+          deploy-message: 'Production — ${{ inputs.release_branch }} @ ${{ github.sha }}'
           enable-pull-request-comment: false
           enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
 
-      # After a successful deploy, sync main with dev so it always
-      # reflects exactly what is live in production.
-      - name: Sync main with dev (release record)
+      # Merge release branch → main (production record)
+      # Merge release branch → dev  (bring release fixes back to integration)
+      - name: Sync main and dev with release branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          RELEASE="${{ inputs.release_branch }}"
+
           git checkout main
-          git merge dev --ff-only
+          git merge "$RELEASE" --ff-only
           git push origin main
+
+          git checkout dev
+          git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE back into dev after production deploy"
+          git push origin dev
