@@ -1,12 +1,12 @@
 # CD — Deploy to Production
 #
-# Triggered automatically when code is merged (pushed) to 'main'.
-# The actual deploy step PAUSES and requires manual approval before running,
-# thanks to the 'production' GitHub Environment protection rule.
+# Triggered MANUALLY via GitHub Actions UI (workflow_dispatch).
+# This is the "promotion gate" from dev → production.
 #
 # Flow:
-#   merge PR into main → workflow starts → deploy-prod job targets 'production'
-#   environment → GitHub PAUSES for reviewer approval → approved → deploys to Netlify PROD
+#   Manual trigger → GitHub PAUSES for reviewer approval (production environment)
+#   → approved → builds latest 'dev' branch → deploys to Netlify PROD
+#   → auto-merges dev into main as a release record
 #
 # Required GitHub secrets:
 #   NETLIFY_AUTH_TOKEN      → Your Netlify personal access token
@@ -15,14 +15,21 @@
 # Required GitHub Environment setup (repo Settings → Environments):
 #   1. Create environment named exactly: production
 #   2. Add "Required reviewers" — add yourself or your team
-#   3. Restrict deployments to the 'main' branch only
+#   3. Remove any branch restriction (no longer needs to be restricted to main)
+#
+# Required repo setting:
+#   → Settings → Actions → General → Workflow permissions → "Read and write permissions"
+#   This allows the auto-merge step to push to main on your behalf.
 
 name: Deploy — Production
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for promoting to production'
+        required: true
+        default: 'Routine promotion from dev'
 
 jobs:
   deploy-prod:
@@ -36,8 +43,11 @@ jobs:
       url: ${{ steps.deploy.outputs.deploy-url }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout dev branch
         uses: actions/checkout@v4
+        with:
+          ref: dev # always promotes from dev
+          fetch-depth: 0 # full history needed for the merge step
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -64,3 +74,13 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
+
+      # After a successful deploy, sync main with dev so it always
+      # reflects exactly what is live in production.
+      - name: Sync main with dev (release record)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git merge dev --ff-only
+          git push origin main

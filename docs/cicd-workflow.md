@@ -5,22 +5,22 @@
 Todo cambio de código sigue este camino antes de llegar a producción:
 
 ```
-feature/* → (PR + CI) → dev → (deploy automático) → development
-                           → (promoción manual)   → staging
-dev → main → (PR + CI) → (aprobación manual)     → production
+feature/* → (PR + CI) → dev → (deploy automático)  → development
+                           → (manual + aprobación) → staging
+                           → (manual + aprobación) → production → auto-merge → main
 ```
 
-Nunca se escribe directamente en `dev` ni en `main` — todo entra por Pull Request.
+Nunca se escribe directamente en `dev` ni en `main` — todo entra por Pull Request o por el workflow de producción.
 
 ---
 
 ## Ramas
 
-| Rama        | Propósito                                                |
-| ----------- | -------------------------------------------------------- |
-| `feature/*` | Trabajo activo en una funcionalidad o fix                |
-| `dev`       | Rama de integración. Recibe merges de todas las features |
-| `main`      | Rama de producción. Solo recibe merges desde `dev`       |
+| Rama        | Propósito                                                                       |
+| ----------- | ------------------------------------------------------------------------------- |
+| `feature/*` | Trabajo activo en una funcionalidad o fix                                       |
+| `dev`       | Rama de integración y fuente de todos los deploys                               |
+| `main`      | Registro histórico de producción — actualizado automáticamente tras cada deploy |
 
 ### Reglas de protección
 
@@ -35,11 +35,13 @@ Tanto `dev` como `main` tienen branch protection rules activas:
 
 ## Ambientes
 
-| Ambiente      | Rama fuente | ¿Cómo se actualiza?                                               | ¿Requiere aprobación? |
-| ------------- | ----------- | ----------------------------------------------------------------- | --------------------- |
-| `development` | `dev`       | Automáticamente en cada merge a `dev`                             | No                    |
-| `staging`     | `dev`       | Manualmente desde GitHub Actions UI                               | Sí                    |
-| `production`  | `main`      | Automáticamente al mergear a `main`, pero pausa antes de ejecutar | Sí                    |
+| Ambiente      | Rama fuente | ¿Cómo se actualiza?                   | ¿Requiere aprobación? |
+| ------------- | ----------- | ------------------------------------- | --------------------- |
+| `development` | `dev`       | Automáticamente en cada merge a `dev` | No                    |
+| `staging`     | `dev`       | Manualmente desde GitHub Actions UI   | Sí                    |
+| `production`  | `dev`       | Manualmente desde GitHub Actions UI   | Sí                    |
+
+Todos los ambientes se alimentan de `dev`. `main` se actualiza automáticamente como registro histórico después de cada deploy exitoso a producción.
 
 Los ambientes están configurados en: **GitHub repo → Settings → Environments**
 
@@ -129,22 +131,24 @@ Al dispararlo, GitHub solicita un motivo de promoción (campo de texto libre) y 
 
 ### `deploy-prod.yml` — Deploy a Production
 
-**Se dispara en:** Cada push a la rama `main` (merge de PR dev→main).
+**Se dispara en:** Solo manualmente desde **GitHub → Actions → Deploy — Production → Run workflow**.
 
-El workflow se inicia automáticamente pero **pausa de inmediato** esperando aprobación del reviewer configurado en el Environment `production`.
+Al dispararlo, GitHub solicita un motivo de promoción y luego **pausa el job** esperando aprobación del reviewer configurado en el Environment `production`.
 
 ```
-1. Push a main detectado → workflow inicia
-2. Pausa → reviewer recibe notificación en GitHub
-3. Reviewer aprueba en: repo → Actions → workflow en espera → Review deployments
-4. Checkout de 'main'
-5. Setup Node.js
-6. npm ci + astro build
-7. Deploy a Netlify PROD   ← usando NETLIFY_SITE_ID_PROD
-   production-deploy: true ← marca como deploy de producción en Netlify
+1. Pausa → reviewer recibe notificación en GitHub
+2. Reviewer aprueba en: repo → Actions → workflow en espera → Review deployments
+3. Checkout de la rama 'dev' (siempre toma dev como fuente)
+4. Setup Node.js
+5. npm ci + astro build
+6. Deploy a Netlify PROD     ← usando NETLIFY_SITE_ID_PROD
+   production-deploy: true   ← marca como deploy de producción en Netlify
+7. Auto-merge de dev → main  ← registra en main exactamente lo que está en prod
 ```
 
 `production-deploy: true` indica a Netlify que este build es el canónico de producción — actualiza el dominio personalizado.
+
+> **Nota:** Para que el auto-merge funcione, ve a **Settings → Actions → General → Workflow permissions** y activa **"Read and write permissions"**. Además, en la branch protection de `main`, habilita **"Allow specified actors to bypass required pull request reviews"** y agrega `github-actions[bot]`.
 
 ---
 
@@ -191,11 +195,9 @@ git push origin feature/nombre-feature
 
 # 8. Verificar en el sitio staging de Netlify
 
-# 9. Abrir PR: dev → main
-#    El CI corre nuevamente
-
-# 10. CI verde → hacer merge del PR
-#     deploy-prod.yml inicia → pausa → aprobar → deploy a producción
+# 9. Cuando esté listo para producción:
+#    GitHub → Actions → Deploy — Production → Run workflow → aprobar
+#    El workflow deploya y luego hace auto-merge de dev → main
 ```
 
 ---
