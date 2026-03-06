@@ -16,12 +16,16 @@
 #   → auto-merges release branch into dev   (brings release fixes back)
 #
 # Required GitHub secrets:
-#   NETLIFY_AUTH_TOKEN      → Your Netlify personal access token
-#   NETLIFY_SITE_ID_PROD    → Site ID of your Netlify "production" site
+#   NETLIFY_AUTH_TOKEN       → Your Netlify personal access token
+#   NETLIFY_SITE_ID_PROD     → Site ID of your Netlify "production" site
+#   DEPLOY_APP_ID            → GitHub App ID for the deploy bot
+#   DEPLOY_APP_PRIVATE_KEY   → GitHub App private key (.pem contents)
 #
-# Required repo settings:
-#   → Settings → Actions → General → Workflow permissions → "Read and write permissions"
-#   → Branch protection on 'main' and 'dev': allow github-actions[bot] to bypass
+# Required GitHub App setup:
+#   1. Create a GitHub App with Contents (rw) + Pull requests (rw) permissions
+#   2. Install it on this repo
+#   3. Add it as bypass actor in the rulesets for 'main' and 'dev'
+#   The App token allows the workflow to push directly to protected branches.
 
 name: Deploy — Production
 
@@ -129,19 +133,29 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PROD }}
 
+      # Generate a token from the GitHub App — this token can bypass branch
+      # protection rules because the App is listed as a bypass actor.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.DEPLOY_APP_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+
       # Merge release branch → main (production record)
       # Merge release branch → dev  (bring release fixes back to integration)
       - name: Sync main and dev with release branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "clima-hogar-deploy-bot[bot]"
+          git config user.email "clima-hogar-deploy-bot[bot]@users.noreply.github.com"
 
           RELEASE="${{ inputs.release_branch }}"
+          REMOTE="https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git"
 
           git checkout main
           git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE into main after production deploy"
-          git push origin main
+          git push "$REMOTE" main
 
           git checkout dev
           git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE back into dev after production deploy"
-          git push origin dev
+          git push "$REMOTE" dev
