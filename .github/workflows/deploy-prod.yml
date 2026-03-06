@@ -139,7 +139,7 @@ jobs:
           RELEASE="${{ inputs.release_branch }}"
 
           git checkout main
-          git merge "$RELEASE" --ff-only
+          git merge "$RELEASE" --no-ff -m "chore: merge $RELEASE into main after production deploy"
           git push origin main
 
           git checkout dev
