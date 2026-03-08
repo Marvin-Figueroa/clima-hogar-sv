@@ -18,3 +18,9 @@
   to     = "https://climahogarsv.com/:splat"
   status = 301
   force  = true
+
+# Thank-you page — ensure trailing slash for form action redirect
+[[redirects]]
+  from   = "/gracias"
+  to     = "/gracias/"
+  status = 301
