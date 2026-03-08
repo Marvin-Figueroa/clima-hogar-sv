@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Services from '../components/Services.astro';
+import WhyChooseUs from '../components/WhyChooseUs.astro';
 ---
 
 <Layout>
@@ -10,6 +11,7 @@ import Services from '../components/Services.astro';
   <!-- Las secciones del sitio se agregarán aquí como componentes:
     <Hero />
     <Services />  ✅
+    <WhyChooseUs />  ✅
     <PorQueElegirnos />
     <Galeria />
     <QuienesSomos />
@@ -45,10 +47,12 @@ import Services from '../components/Services.astro';
     <!-- Services -->
     <Services />
 
+    <!-- Why Choose Us -->
+    <WhyChooseUs />
+
     <!-- Remaining placeholders -->
     {
       [
-        { label: '¿Por qué nosotros?', bg: 'bg-white', text: 'text-navy' },
         { label: 'Galería', bg: 'bg-bone', text: 'text-navy' },
         { label: 'Contacto', bg: 'bg-navy', text: 'text-white' },
       ].map(({ label, bg, text }) => (
