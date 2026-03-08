@@ -99,3 +99,13 @@
   --shadow-card-hover: 0 8px 40px 0 rgb(0 33 71 / 0.16);
   --shadow-btn: 0 2px 12px 0 rgb(80 200 255 / 0.3);
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

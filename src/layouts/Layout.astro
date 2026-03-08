@@ -6,6 +6,7 @@ interface Props {
   description?: string;
   image?: string;
   canonicalUrl?: string;
+  robots?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   description = 'Empresa especializada en instalación, mantenimiento y reparación de aires acondicionados en El Salvador. Técnicos certificados y presupuesto sin costo.',
   image = '/og-image.jpg',
   canonicalUrl = Astro.url.href,
+  robots = 'index, follow',
 } = Astro.props;
 
 const siteName = 'Clima Hogar SV';
@@ -37,7 +39,7 @@ const twitterHandle = '@climahogarsv';
       name="keywords"
       content="aire acondicionado El Salvador, instalación aire acondicionado, mantenimiento aire acondicionado, reparación aire acondicionado, técnicos certificados, San Salvador"
     />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- ── Open Graph (Facebook, WhatsApp, LinkedIn) ────────────── -->
