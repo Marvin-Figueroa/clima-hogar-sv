@@ -1,0 +1,470 @@
+---
+const services = [
+  'Instalación de equipo nuevo',
+  'Reemplazo de equipo existente',
+  'Mantenimiento preventivo',
+  'Reparación de equipo',
+  'Carga de gas refrigerante',
+  'Diseño e instalación de ductería',
+  'Desinstalación de equipo',
+  'Diseño y asesoría en climatización',
+  'Venta de equipo',
+  'Emergencia',
+];
+---
+
+<section id="cotizacion" class="relative overflow-hidden bg-bone py-24">
+  <div
+    class="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-cyan/8 blur-3xl"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-blue/8 blur-3xl"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
+      <!-- Left column: header + trust signals -->
+      <div class="flex flex-col justify-center">
+        <span
+          class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue"
+        >
+          Cotización gratuita
+        </span>
+        <h2 class="font-display text-4xl font-bold leading-tight text-navy lg:text-5xl">
+          Cuéntanos qué<br />necesitas
+        </h2>
+        <p class="mt-6 font-body text-lg leading-relaxed text-gray-500">
+          Completa el formulario y te enviamos una cotización sin costo ni compromiso. Atendemos en
+          todo El Salvador.
+        </p>
+
+        <!-- Trust signals -->
+        <ul class="mt-10 flex flex-col gap-4" role="list">
+          {
+            [
+              'Respuesta en menos de 24 horas',
+              'Sin costos ocultos — precios claros',
+              'Servicio de emergencia 24/7 disponible',
+            ].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan/15">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-blue"
+                    aria-hidden="true"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <span class="font-body text-base text-gray-600">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- WhatsApp alternative -->
+        <div class="mt-10 flex items-center gap-5">
+          <div class="h-px flex-1 bg-bone-dark"></div>
+          <span class="font-body text-xs font-semibold uppercase tracking-widest text-gray-400"
+            >o si prefieres</span
+          >
+          <div class="h-px flex-1 bg-bone-dark"></div>
+        </div>
+        <a
+          href="https://wa.me/50379723918"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group mt-5 flex items-center gap-4 rounded-2xl border border-bone-dark bg-white px-6 py-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#25D366]/40 hover:shadow-md hover:shadow-[#25D366]/10"
+        >
+          <span
+            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-colors duration-300 group-hover:bg-[#25D366]/20"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+              ></path>
+            </svg>
+          </span>
+          <div>
+            <p class="font-display text-sm font-bold text-navy">
+              Escríbenos por WhatsApp
+              <span class="sr-only">(abre en nueva pestaña)</span>
+            </p>
+            <p class="font-body text-xs text-gray-400">Respuesta inmediata</p>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="ml-auto text-gray-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#25D366]"
+            aria-hidden="true"
+          >
+            <path d="M9 18l6-6-6-6"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Right column: form -->
+      <div class="rounded-3xl bg-white p-8 shadow-xl shadow-navy/8 lg:p-10">
+        <form
+          name="cotizacion"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          novalidate
+          aria-label="Formulario de cotización"
+          id="quote-form"
+        >
+          <!-- Netlify hidden inputs -->
+          <input type="hidden" name="form-name" value="cotizacion" />
+
+          <!-- Honeypot (anti-spam) — oculto visualmente y para AT -->
+          <div class="hidden" aria-hidden="true">
+            <label for="bot-field">No llenar</label>
+            <input id="bot-field" name="bot-field" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <!-- Nombre -->
+            <div class="flex flex-col gap-1.5">
+              <label for="nombre" class="font-body text-sm font-semibold text-navy">
+                Nombre completo <span class="text-blue" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="nombre"
+                name="nombre"
+                type="text"
+                required
+                autocomplete="name"
+                placeholder="Tu nombre"
+                maxlength="100"
+                aria-required="true"
+                aria-invalid="false"
+                aria-describedby="error-nombre"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+              <p
+                id="error-nombre"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="flex flex-col gap-1.5">
+              <label for="telefono" class="font-body text-sm font-semibold text-navy">
+                Teléfono <span class="text-blue" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="telefono"
+                name="telefono"
+                type="tel"
+                required
+                autocomplete="tel"
+                placeholder="xxxx-xxxx"
+                maxlength="20"
+                aria-required="true"
+                aria-invalid="false"
+                aria-describedby="error-telefono"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+              <p
+                id="error-telefono"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
+            <!-- Tipo de servicio -->
+            <div class="flex flex-col gap-1.5 sm:col-span-2">
+              <label for="servicio" class="font-body text-sm font-semibold text-navy">
+                Tipo de servicio <span class="text-blue" aria-hidden="true">*</span>
+              </label>
+              <div class="relative">
+                <select
+                  id="servicio"
+                  name="servicio"
+                  required
+                  aria-required="true"
+                  aria-invalid="false"
+                  aria-describedby="error-servicio"
+                  class="w-full appearance-none rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+                >
+                  <option value="" disabled selected>Selecciona un servicio</option>
+                  {services.map((s) => <option value={s}>{s}</option>)}
+                </select>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  aria-hidden="true"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+              <p
+                id="error-servicio"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
+            <!-- Marca y modelo -->
+            <div class="flex flex-col gap-1.5">
+              <label for="marca-modelo" class="font-body text-sm font-semibold text-navy">
+                Marca y modelo del equipo
+              </label>
+              <input
+                id="marca-modelo"
+                name="marca_modelo"
+                type="text"
+                placeholder="Ej: LG S12EQ"
+                maxlength="100"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+            </div>
+
+            <!-- Capacidad -->
+            <div class="flex flex-col gap-1.5">
+              <label for="capacidad" class="font-body text-sm font-semibold text-navy">
+                Capacidad del equipo
+              </label>
+              <input
+                id="capacidad"
+                name="capacidad"
+                type="text"
+                placeholder="Ej: 12,000 BTU / 1 ton"
+                maxlength="50"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+            </div>
+
+            <!-- Instalación nueva o reemplazo -->
+            <div class="flex flex-col gap-2">
+              <fieldset>
+                <legend class="font-body text-sm font-semibold text-navy">
+                  ¿Es instalación nueva o reemplazo?
+                </legend>
+                <div class="mt-2 flex gap-6">
+                  {
+                    ['Instalación nueva', 'Reemplazo'].map((opt) => (
+                      <label class="flex cursor-pointer items-center gap-2">
+                        <input
+                          type="radio"
+                          name="tipo_instalacion"
+                          value={opt}
+                          class="h-4 w-4 accent-blue"
+                        />
+                        <span class="font-body text-sm text-gray-600">{opt}</span>
+                      </label>
+                    ))
+                  }
+                </div>
+              </fieldset>
+            </div>
+
+            <!-- Cantidad de unidades -->
+            <div class="flex flex-col gap-1.5">
+              <label for="cantidad" class="font-body text-sm font-semibold text-navy">
+                Cantidad de unidades
+              </label>
+              <input
+                id="cantidad"
+                name="cantidad"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="1"
+                aria-invalid="false"
+                aria-describedby="error-cantidad"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+              <p
+                id="error-cantidad"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
+            <!-- Descripción del problema -->
+            <div class="flex flex-col gap-1.5 sm:col-span-2">
+              <label for="descripcion" class="font-body text-sm font-semibold text-navy">
+                Descripción del problema o solicitud
+              </label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                rows="4"
+                placeholder="Describe brevemente qué necesitas o el problema que presenta tu equipo..."
+                maxlength="1000"
+                class="resize-none rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Required fields note -->
+          <p class="mt-4 font-body text-xs text-gray-400">
+            <span class="text-blue" aria-hidden="true">*</span> Campos obligatorios
+          </p>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-navy px-8 py-4 font-display text-base font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-light hover:shadow-lg hover:shadow-navy/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+          >
+            Solicitar cotización gratis
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('quote-form') as HTMLFormElement | null;
+  if (!form) throw new Error('Quote form not found');
+
+  // ── Allowed service values (whitelist) ─────────────────────────
+  const ALLOWED_SERVICES = new Set([
+    'Instalación de equipo nuevo',
+    'Reemplazo de equipo existente',
+    'Mantenimiento preventivo',
+    'Reparación de equipo',
+    'Carga de gas refrigerante',
+    'Diseño e instalación de ductería',
+    'Desinstalación de equipo',
+    'Diseño y asesoría en climatización',
+    'Venta de equipo',
+    'Emergencia',
+  ]);
+
+  // ── Validation rules ────────────────────────────────────────────
+  const rules: Record<string, (v: string) => string> = {
+    nombre: (v) => {
+      if (!v.trim()) return 'El nombre es obligatorio.';
+      if (v.trim().length < 2) return 'El nombre debe tener al menos 2 caracteres.';
+      return '';
+    },
+    telefono: (v) => {
+      if (!v.trim()) return 'El teléfono es obligatorio.';
+      const digits = v.replace(/\D/g, '');
+      if (digits.length !== 8) return 'Ingresa un número de teléfono válido (8 dígitos).';
+      if (!/^[267]/.test(digits)) return 'El número debe comenzar por 2 (fijo), 6 o 7 (celular).';
+      return '';
+    },
+    servicio: (v) => {
+      if (!v) return 'Selecciona un tipo de servicio.';
+      if (!ALLOWED_SERVICES.has(v)) return 'Selecciona una opción válida de la lista.';
+      return '';
+    },
+    cantidad: (v) => {
+      if (v === '') return '';
+      const n = Number(v);
+      if (!Number.isInteger(n) || n < 1 || n > 99)
+        return 'La cantidad debe ser un número entre 1 y 99.';
+      return '';
+    },
+  };
+
+  // ── Helpers ─────────────────────────────────────────────────────
+  function setError(fieldId: string, message: string) {
+    const input = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement | null;
+    const errorEl = document.getElementById(`error-${fieldId}`);
+    if (!input || !errorEl) return;
+    if (message) {
+      input.classList.add('border-red-400', 'bg-red-50');
+      input.setAttribute('aria-invalid', 'true');
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    } else {
+      input.classList.remove('border-red-400', 'bg-red-50');
+      input.setAttribute('aria-invalid', 'false');
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  }
+
+  function validateField(fieldId: string): boolean {
+    const input = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement | null;
+    if (!input) return true;
+    const error = rules[fieldId]?.(input.value) ?? '';
+    setError(fieldId, error);
+    return error === '';
+  }
+
+  // ── Blur validation (real-time feedback) ────────────────────────
+  ['nombre', 'telefono', 'servicio', 'cantidad'].forEach((id) => {
+    const el = document.getElementById(id);
+    el?.addEventListener('blur', () => validateField(id));
+    el?.addEventListener('input', () => {
+      const errorEl = document.getElementById(`error-${id}`);
+      if (!errorEl?.classList.contains('hidden')) validateField(id);
+    });
+  });
+
+  // ── Submit validation ─────────────────────────────────────────────
+  form.addEventListener('submit', (e) => {
+    const validNombre = validateField('nombre');
+    const validTelefono = validateField('telefono');
+    const validServicio = validateField('servicio');
+    const validCantidad = validateField('cantidad');
+
+    if (!validNombre || !validTelefono || !validServicio || !validCantidad) {
+      e.preventDefault();
+      const firstError = form.querySelector('[aria-invalid="true"]') as HTMLElement | null;
+      firstError?.focus();
+    }
+  });
+</script>
