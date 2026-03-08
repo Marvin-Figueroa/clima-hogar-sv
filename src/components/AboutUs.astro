@@ -1,0 +1,173 @@
+---
+import { Image } from 'astro:assets';
+import photo1 from '../assets/about/about-1.png';
+import photo2 from '../assets/about/about-2.png';
+import photo3 from '../assets/about/about-3.png';
+
+const stats = [
+  { value: '10+', label: 'Años de experiencia' },
+  { value: '100+', label: 'Clientes satisfechos' },
+  { value: '100%', label: 'Garantía en cada trabajo' },
+];
+---
+
+<section
+  id="quienes-somos"
+  aria-labelledby="about-heading"
+  class="relative overflow-hidden bg-white py-24 lg:py-32"
+>
+  <!-- Decorative blobs -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -left-40 top-0 h-120 w-120 rounded-full bg-cyan/6 blur-3xl"
+  >
+  </div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-blue/8 blur-3xl"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+      <!-- ── Photo mosaic (left) ─────────────────────────────────── -->
+      <div class="relative order-last pb-8 lg:order-first">
+        <!-- Accent bracket line -->
+        <div
+          class="absolute -left-4 top-8 h-[calc(100%-4rem)] w-1 rounded-full bg-linear-to-b from-cyan via-blue to-transparent opacity-60"
+        >
+        </div>
+
+        <!-- Large top photo -->
+        <div class="overflow-hidden rounded-2xl shadow-xl">
+          <Image
+            src={photo1}
+            alt="Equipo técnico de Clima Hogar SV realizando una instalación profesional"
+            class="h-72 w-full object-cover transition-transform duration-700 hover:scale-105 sm:h-80"
+            widths={[640, 900]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+          />
+        </div>
+
+        <!-- Two smaller photos side by side -->
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div class="overflow-hidden rounded-xl shadow-lg">
+            <Image
+              src={photo2}
+              alt="Mantenimiento preventivo de aire acondicionado por Clima Hogar SV"
+              class="h-48 w-full object-cover transition-transform duration-700 hover:scale-105"
+              widths={[400, 600]}
+              sizes="(max-width: 1024px) 50vw, 25vw"
+            />
+          </div>
+          <div class="overflow-hidden rounded-xl shadow-lg">
+            <Image
+              src={photo3}
+              alt="Instalación estética y limpia de equipo de aire acondicionado"
+              class="h-48 w-full object-cover transition-transform duration-700 hover:scale-105"
+              widths={[400, 600]}
+              sizes="(max-width: 1024px) 50vw, 25vw"
+            />
+          </div>
+        </div>
+
+        <!-- Floating quality badge -->
+        <div
+          class="absolute -bottom-6 right-4 flex items-center gap-3 rounded-2xl bg-navy px-5 py-4 shadow-2xl sm:right-8"
+        >
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan/20">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-cyan"
+              aria-hidden="true"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="font-display text-sm font-bold text-white">Trabajo garantizado</p>
+            <p class="font-body text-xs text-white/60">Hogares y empresas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Text content (right) ───────────────────────────────── -->
+      <div class="flex flex-col">
+        <!-- Label -->
+        <span
+          class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue"
+        >
+          Quiénes somos
+        </span>
+
+        <!-- Headline -->
+        <h2
+          id="about-heading"
+          class="font-display text-4xl font-bold leading-tight text-navy lg:text-5xl"
+        >
+          Comprometidos<br />con tu confort
+        </h2>
+
+        <!-- Divider accent -->
+        <div class="mt-6 flex items-center gap-3">
+          <div class="h-0.5 w-12 rounded-full bg-cyan"></div>
+          <div class="h-0.5 w-4 rounded-full bg-blue/40"></div>
+        </div>
+
+        <!-- Body text -->
+        <div class="mt-6 space-y-4 font-body text-base leading-relaxed text-gray-600">
+          <p>
+            Nacimos con la misión de ofrecer un servicio confiable, profesional y accesible para
+            hogares y empresas. Desde el inicio nos enfocamos en brindar instalaciones,
+            mantenimiento y soluciones de aire acondicionado de alta calidad, cuidando cada detalle
+            para que los equipos funcionen de manera eficiente y duradera.
+          </p>
+          <p>
+            Con el tiempo hemos crecido gracias a la confianza de nuestros clientes, quienes valoran
+            nuestro compromiso, la puntualidad y la transparencia en cada trabajo que realizamos.
+          </p>
+          <p>
+            Nos distinguimos por utilizar materiales de alta calidad, brindar asesoría técnica
+            profesional y buscar siempre la mejor solución para cada necesidad. También nos
+            caracterizamos por realizar{' '}
+            <strong class="font-semibold text-navy">trabajos limpios y estéticos</strong>, cuidando
+            cada detalle del área de trabajo y asegurándonos de dejar cada espacio ordenado.
+          </p>
+        </div>
+
+        <!-- Goal statement highlight -->
+        <div
+          role="note"
+          aria-label="Nuestro objetivo"
+          class="mt-8 rounded-xl border-l-4 border-cyan bg-gray-50 px-6 py-4 shadow-sm"
+        >
+          <p class="font-body text-base italic leading-relaxed text-navy/80">
+            "Nuestro objetivo es garantizar confort, buen funcionamiento y tranquilidad a cada
+            cliente que confía en nuestros servicios."
+          </p>
+        </div>
+
+        <!-- Stats row -->
+        <dl class="mt-10 grid grid-cols-3 gap-4">
+          {
+            stats.map((stat) => (
+              <div class="flex flex-col-reverse rounded-xl bg-gray-50 px-4 py-5 text-center shadow-sm ring-1 ring-bone-dark/50">
+                <dt class="mt-1 font-body text-xs leading-snug text-gray-500">{stat.label}</dt>
+                <dd class="font-display text-2xl font-bold text-navy lg:text-3xl">{stat.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <!-- end text -->
+    </div>
+  </div>
+</section>
