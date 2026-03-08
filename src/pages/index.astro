@@ -2,26 +2,52 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Services from '../components/Services.astro';
 ---
 
 <Layout>
   <Header />
   <!-- Las secciones del sitio se agregarán aquí como componentes:
     <Hero />
-    <Servicios />
+    <Services />  ✅
     <PorQueElegirnos />
     <Galeria />
     <QuienesSomos />
     <FormularioCotizacion />
     <Contacto />
-    <Footer />
+    <Footer /> ✅
   -->
-  <!-- PLACEHOLDER — se reemplazará con componentes reales -->
   <main class="pt-20">
+    <!-- Hero placeholder -->
+    <section class="flex min-h-screen items-center justify-center bg-navy">
+      <div class="flex flex-col items-center gap-4 opacity-20 text-white">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="64"
+          height="64"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+          <path d="M8 21h8M12 17v4"></path>
+          <path d="M12 8v4M12 12h.01"></path>
+        </svg>
+        <p class="font-display text-3xl font-bold">Hero Section</p>
+        <p class="font-body text-sm tracking-widest uppercase">En construcción</p>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <Services />
+
+    <!-- Remaining placeholders -->
     {
       [
-        { label: 'Hero Section', bg: 'bg-navy', text: 'text-white' },
-        { label: 'Servicios', bg: 'bg-bone', text: 'text-navy' },
         { label: '¿Por qué nosotros?', bg: 'bg-white', text: 'text-navy' },
         { label: 'Galería', bg: 'bg-bone', text: 'text-navy' },
         { label: 'Contacto', bg: 'bg-navy', text: 'text-white' },
