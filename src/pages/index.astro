@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Services from '../components/Services.astro';
 import WhyChooseUs from '../components/WhyChooseUs.astro';
+import QuoteForm from '../components/QuoteForm.astro';
 ---
 
 <Layout>
@@ -50,12 +51,12 @@ import WhyChooseUs from '../components/WhyChooseUs.astro';
     <!-- Why Choose Us -->
     <WhyChooseUs />
 
+    <!-- Quote Form -->
+    <QuoteForm />
+
     <!-- Remaining placeholders -->
     {
-      [
-        { label: 'Galería', bg: 'bg-bone', text: 'text-navy' },
-        { label: 'Contacto', bg: 'bg-navy', text: 'text-white' },
-      ].map(({ label, bg, text }) => (
+      [{ label: 'Galería', bg: 'bg-bone', text: 'text-navy' }].map(({ label, bg, text }) => (
         <section class={`flex min-h-screen items-center justify-center ${bg}`}>
           <div class={`flex flex-col items-center gap-4 opacity-20 ${text}`}>
             <svg
