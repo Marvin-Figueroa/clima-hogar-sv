@@ -188,7 +188,7 @@ const services = [
                 required
                 autocomplete="tel"
                 placeholder="xxxx-xxxx"
-                maxlength="20"
+                maxlength="9"
                 aria-required="true"
                 aria-invalid="false"
                 aria-describedby="error-telefono"
@@ -196,6 +196,33 @@ const services = [
               />
               <p
                 id="error-telefono"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="flex flex-col gap-1.5 sm:col-span-2">
+              <label for="correo" class="font-body text-sm font-semibold text-navy">
+                Correo electrónico <span class="text-blue" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="correo"
+                name="correo"
+                type="email"
+                required
+                autocomplete="email"
+                placeholder="tu@correo.com"
+                maxlength="150"
+                aria-required="true"
+                aria-invalid="false"
+                aria-describedby="error-correo"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+              <p
+                id="error-correo"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
                 aria-live="polite"
@@ -405,6 +432,12 @@ const services = [
       if (!/^[267]/.test(digits)) return 'El número debe comenzar por 2 (fijo), 6 o 7 (celular).';
       return '';
     },
+    correo: (v) => {
+      if (!v.trim()) return 'El correo electrónico es obligatorio.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()))
+        return 'Ingresa un correo electrónico válido.';
+      return '';
+    },
     servicio: (v) => {
       if (!v) return 'Selecciona un tipo de servicio.';
       if (!ALLOWED_SERVICES.has(v)) return 'Selecciona una opción válida de la lista.';
@@ -445,8 +478,15 @@ const services = [
     return error === '';
   }
 
+  // ── Phone mask xxxx-xxxx ────────────────────────────────────────
+  const telefonoInput = document.getElementById('telefono') as HTMLInputElement | null;
+  telefonoInput?.addEventListener('input', () => {
+    const digits = telefonoInput.value.replace(/\D/g, '').slice(0, 8);
+    telefonoInput.value = digits.length > 4 ? `${digits.slice(0, 4)}-${digits.slice(4)}` : digits;
+  });
+
   // ── Blur validation (real-time feedback) ────────────────────────
-  ['nombre', 'telefono', 'servicio', 'cantidad'].forEach((id) => {
+  ['nombre', 'telefono', 'correo', 'servicio', 'cantidad'].forEach((id) => {
     const el = document.getElementById(id);
     el?.addEventListener('blur', () => validateField(id));
     el?.addEventListener('input', () => {
@@ -459,10 +499,11 @@ const services = [
   form.addEventListener('submit', (e) => {
     const validNombre = validateField('nombre');
     const validTelefono = validateField('telefono');
+    const validCorreo = validateField('correo');
     const validServicio = validateField('servicio');
     const validCantidad = validateField('cantidad');
 
-    if (!validNombre || !validTelefono || !validServicio || !validCantidad) {
+    if (!validNombre || !validTelefono || !validCorreo || !validServicio || !validCantidad) {
       e.preventDefault();
       const firstError = form.querySelector('[aria-invalid="true"]') as HTMLElement | null;
       firstError?.focus();
