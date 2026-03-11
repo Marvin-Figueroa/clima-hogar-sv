@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check release branch HEAD is deployed to staging
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const releaseBranch = '${{ inputs.release_branch }}';
@@ -148,7 +148,7 @@ jobs:
       # Uses the GitHub Repos Merge API via the App token — no git push needed,
       # so credential helper issues are bypassed entirely.
       - name: Sync main and dev with release branch
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
