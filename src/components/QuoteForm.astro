@@ -30,14 +30,14 @@ const services = [
         <span
           class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue"
         >
-          Cotización gratuita
+          Asesoría y cotización personalizada
         </span>
         <h2 class="font-display text-4xl font-bold leading-tight text-navy lg:text-5xl">
           Cuéntanos qué<br />necesitas
         </h2>
         <p class="mt-6 font-body text-lg leading-relaxed text-gray-500">
-          Completa el formulario y te enviamos una cotización sin costo ni compromiso. Atendemos en
-          todo El Salvador.
+          Completa el formulario y nuestro equipo te enviará una cotización personalizada. Brindamos
+          atención en todo El Salvador.
         </p>
 
         <!-- Trust signals -->
@@ -231,7 +231,7 @@ const services = [
             </div>
 
             <!-- Tipo de servicio -->
-            <div class="flex flex-col gap-1.5 sm:col-span-2">
+            <div class="flex flex-col gap-1.5">
               <label for="servicio" class="font-body text-sm font-semibold text-navy">
                 Tipo de servicio <span class="text-blue" aria-hidden="true">*</span>
               </label>
@@ -273,6 +273,31 @@ const services = [
               </p>
             </div>
 
+            <!-- Cantidad de unidades -->
+            <div class="flex flex-col gap-1.5">
+              <label for="cantidad" class="font-body text-sm font-semibold text-navy">
+                Cantidad de unidades
+              </label>
+              <input
+                id="cantidad"
+                name="cantidad"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="1"
+                aria-invalid="false"
+                aria-describedby="error-cantidad"
+                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
+              />
+              <p
+                id="error-cantidad"
+                class="hidden mt-1.5 font-body text-xs text-red-500"
+                role="alert"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+
             <!-- Marca y modelo -->
             <div class="flex flex-col gap-1.5">
               <label for="marca-modelo" class="font-body text-sm font-semibold text-navy">
@@ -303,55 +328,6 @@ const services = [
               />
             </div>
 
-            <!-- Instalación nueva o reemplazo -->
-            <div class="flex flex-col gap-2">
-              <fieldset>
-                <legend class="font-body text-sm font-semibold text-navy">
-                  ¿Es instalación nueva o reemplazo?
-                </legend>
-                <div class="mt-2 flex gap-6">
-                  {
-                    ['Instalación nueva', 'Reemplazo'].map((opt) => (
-                      <label class="flex cursor-pointer items-center gap-2">
-                        <input
-                          type="radio"
-                          name="tipo_instalacion"
-                          value={opt}
-                          class="h-4 w-4 accent-blue"
-                        />
-                        <span class="font-body text-sm text-gray-600">{opt}</span>
-                      </label>
-                    ))
-                  }
-                </div>
-              </fieldset>
-            </div>
-
-            <!-- Cantidad de unidades -->
-            <div class="flex flex-col gap-1.5">
-              <label for="cantidad" class="font-body text-sm font-semibold text-navy">
-                Cantidad de unidades
-              </label>
-              <input
-                id="cantidad"
-                name="cantidad"
-                type="number"
-                min="1"
-                max="99"
-                placeholder="1"
-                aria-invalid="false"
-                aria-describedby="error-cantidad"
-                class="rounded-xl border border-bone-dark bg-bone px-4 py-3 font-body text-sm text-navy placeholder:text-gray-400 transition-colors duration-200 focus:border-blue focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue/20"
-              />
-              <p
-                id="error-cantidad"
-                class="hidden mt-1.5 font-body text-xs text-red-500"
-                role="alert"
-                aria-live="polite"
-              >
-              </p>
-            </div>
-
             <!-- Descripción del problema -->
             <div class="flex flex-col gap-1.5 sm:col-span-2">
               <label for="descripcion" class="font-body text-sm font-semibold text-navy">
@@ -378,7 +354,7 @@ const services = [
             type="submit"
             class="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-navy px-8 py-4 font-display text-base font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-navy-light hover:shadow-lg hover:shadow-navy/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
           >
-            Solicitar cotización gratis
+            Solicitar cotización
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
