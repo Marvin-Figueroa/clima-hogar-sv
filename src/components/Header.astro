@@ -2,9 +2,7 @@
 const navLinks = [
   { label: 'Servicios', href: '#servicios' },
   { label: '¿Por qué nosotros?', href: '#por-que-elegirnos' },
-  { label: 'Galería', href: '#galeria' },
   { label: 'Quiénes somos', href: '#quienes-somos' },
-  { label: 'Contacto', href: '#contacto' },
 ];
 ---
 
@@ -131,21 +129,10 @@ const navLinks = [
 </header>
 
 <style>
-  /* Header states — scroll-aware background */
+  /* Header — darker than hero so it always stands out */
   #site-header {
-    background: color-mix(in srgb, var(--color-navy) 85%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition:
-      background 0.3s ease,
-      box-shadow 0.3s ease;
-  }
-
-  #site-header.scrolled {
-    background: var(--color-navy);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.25);
+    background: var(--color-navy-dark);
+    box-shadow: 0 4px 24px 0 rgb(0 0 0 / 0.3);
   }
 
   /* Mobile menu background inherits from header */
@@ -155,21 +142,12 @@ const navLinks = [
 </style>
 
 <script>
-  const header = document.getElementById('site-header')!;
   const menuToggle = document.getElementById('menu-toggle')!;
   const mobileMenu = document.getElementById('mobile-menu')!;
   const line1 = document.getElementById('ham-line-1')!;
   const line2 = document.getElementById('ham-line-2')!;
   const line3 = document.getElementById('ham-line-3')!;
 
-  // ── Scroll: solidify header ──────────────────────────────────────
-  function onScroll() {
-    header.classList.toggle('scrolled', window.scrollY > 30);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // ── Mobile menu ──────────────────────────────────────────────────
   function closeMenu() {
     menuToggle.setAttribute('aria-expanded', 'false');
     menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
