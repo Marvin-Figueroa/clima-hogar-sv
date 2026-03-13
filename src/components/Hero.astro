@@ -4,8 +4,7 @@ import heroImage from '../assets/hero-image.png';
 
 const stats = [
   { value: '+15', label: 'años de experiencia' },
-  { value: '+500', label: 'instalaciones realizadas' },
-  { value: '24/7', label: 'servicio de emergencia' },
+  { value: '+5,000', label: 'instalaciones realizadas' },
   { value: '100%', label: 'garantía en cada trabajo' },
 ];
 ---
@@ -104,8 +103,9 @@ const stats = [
               opacity="0.6"></path>
           </svg>
         </span>
-        al alcance<br />
-        de tu hogar.
+        en<br />
+        cada uno<br />
+        de tus espacios.
       </h1>
 
       <!-- Sub-headline -->
@@ -228,7 +228,9 @@ const stats = [
   <!-- ── Stats strip ──────────────────────────────────────────────── -->
   <div class="hero-stats relative mt-12 border-t border-white/8 lg:mt-16">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="grid grid-cols-2 divide-x divide-white/8 lg:grid-cols-4">
+      <div
+        class="grid grid-cols-1 divide-y divide-white/8 md:grid-cols-3 md:divide-x md:divide-y-0"
+      >
         {
           stats.map((stat) => (
             <div class="flex flex-col items-center gap-1 px-6 py-7 text-center">
