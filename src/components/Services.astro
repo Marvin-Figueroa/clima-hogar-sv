@@ -12,23 +12,23 @@ const primaryServices = [
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
     title: 'Reparación y Mantenimiento',
     description:
-      'Diagnóstico preciso y reparación de cualquier falla en tu equipo. Mantenimiento preventivo para extender su vida útil y eficiencia.',
+      'Diagnóstico preciso y reparación de cualquier falla en tu equipo.\nMantenimiento preventivo para extender su vida útil y eficiencia.',
     tags: ['Todo tipo de equipo', 'Multimarca'],
     accent: false,
   },
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    title: 'Emergencia 24/7',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="m4.93 10.93 2.12 2.12"/><path d="M2 12h20"/><path d="m4.93 13.07 2.12-2.12"/><path d="m16.95 10.93-2.12 2.12"/><path d="m16.95 13.07-2.12-2.12"/><path d="m10.93 4.93 2.12 2.12"/><path d="m13.07 4.93-2.12 2.12"/><path d="m10.93 16.95 2.12-2.12"/><path d="m13.07 16.95-2.12-2.12"/></svg>`,
+    title: 'Cuartos Fríos',
     description:
-      'Tu equipo no espera horario de oficina y nosotros tampoco. Atendemos emergencias los 7 días de la semana, a cualquier hora.',
-    tags: ['Disponible siempre', '7 días'],
+      'Protege tu inversión y evita pérdidas innecesarias con un mantenimiento preventivo adecuado.\nContamos con técnicos especializados que revisan cada componente del sistema para asegurar un rendimiento confiable y la correcta conservación de tus productos.',
+    tags: ['Comercial', 'Industrial'],
     accent: false,
   },
   {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
     title: 'Venta de Equipos',
     description:
-      'Equipos de alta eficiencia energética de las mejores marcas. Te asesoramos en la elección ideal según tu espacio y presupuesto.',
+      'Equipos de alta eficiencia energética de las mejores marcas. Te asesoramos en la elección ideal según tu espacio y presupuesto.\nCon garantía para tu tranquilidad y confianza.',
     tags: ['Alta eficiencia', 'Multimarca'],
     accent: false,
   },
@@ -111,7 +111,7 @@ const secondaryServices = [
               {service.title}
             </h3>
             <p
-              class={`mb-5 flex-1 font-body text-sm leading-relaxed ${service.accent ? 'text-white/75' : 'text-gray-500'}`}
+              class={`mb-5 flex-1 whitespace-pre-line font-body text-sm leading-relaxed ${service.accent ? 'text-white/75' : 'text-gray-500'}`}
             >
               {service.description}
             </p>
