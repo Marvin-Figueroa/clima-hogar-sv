@@ -6,9 +6,13 @@ import panasonicLogo from '../assets/brands/panasonic-logo.svg';
 import daikinLogo from '../assets/brands/daikin-logo.svg';
 import lgLogo from '../assets/brands/lg-logo.svg';
 import mideaLogo from '../assets/brands/midea-logo.svg';
-import mirageLogo from '../assets/brands/mirage-logo.png';
-import yorkLogo from '../assets/brands/york-logo.png';
+import confortstarLogo from '../assets/brands/confortstar-logo.svg';
+import hisenseLogo from '../assets/brands/hisense-logo.svg';
+import adinaLogo from '../assets/brands/adina-logo.svg';
+import yorkLogo from '../assets/brands/york-logo.svg';
 import samsungLogo from '../assets/brands/samsung-logo.svg';
+import lennoxLogo from '../assets/brands/lennox-logo.svg';
+import innovairLogo from '../assets/brands/innovair-logo.svg';
 
 const brands = [
   { name: 'Carrier', logo: carrierLogo },
@@ -16,9 +20,13 @@ const brands = [
   { name: 'Daikin', logo: daikinLogo },
   { name: 'LG', logo: lgLogo },
   { name: 'Midea', logo: mideaLogo },
-  { name: 'Mirage', logo: mirageLogo },
+  { name: 'ConfortStar', logo: confortstarLogo },
+  { name: 'Hisense', logo: hisenseLogo },
+  { name: 'Adina', logo: adinaLogo },
   { name: 'York', logo: yorkLogo },
   { name: 'Samsung', logo: samsungLogo },
+  { name: 'Lennox', logo: lennoxLogo },
+  { name: 'Innovair', logo: innovairLogo },
 ];
 ---
 
@@ -37,15 +45,15 @@ const brands = [
     </h2>
 
     <!-- Brand grid — ul/li para semántica de lista correcta -->
-    <ul role="list" class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+    <ul role="list" class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
       {
         brands.map((brand) => (
           <li class="group flex items-center justify-center rounded-xl border border-bone-dark bg-bone px-4 py-5 transition-all duration-300 hover:border-blue/20 hover:bg-white hover:shadow-md hover:shadow-navy/8">
             <Image
               src={brand.logo}
               alt={brand.name}
-              height={40}
-              class="h-10 w-auto object-contain opacity-50 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              height={60}
+              class="h-[60px] w-auto object-contain opacity-50 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
             />
           </li>
         ))
