@@ -43,32 +43,30 @@ const services = [
         <!-- Trust signals -->
         <ul class="mt-10 flex flex-col gap-4" role="list">
           {
-            [
-              'Respuesta en menos de 24 horas',
-              'Sin costos ocultos — precios claros',
-              'Servicio de emergencia 24/7 disponible',
-            ].map((item) => (
-              <li class="flex items-center gap-3">
-                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan/15">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="text-blue"
-                    aria-hidden="true"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </span>
-                <span class="font-body text-base text-gray-600">{item}</span>
-              </li>
-            ))
+            ['Respuesta en menos de 24 horas', 'Sin costos ocultos — precios claros'].map(
+              (item) => (
+                <li class="flex items-center gap-3">
+                  <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan/15">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="text-blue"
+                      aria-hidden="true"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span class="font-body text-base text-gray-600">{item}</span>
+                </li>
+              )
+            )
           }
         </ul>
 
