@@ -44,16 +44,17 @@ const brands = [
       Marcas con las que trabajamos
     </h2>
 
-    <!-- Brand grid — ul/li para semántica de lista correcta -->
-    <ul role="list" class="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-4">
+    <!-- Brand grid — unificado para móviles y escritorio -->
+    <ul role="list" class="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-4 pt-4 pb-8">
       {
         brands.map((brand) => (
-          <li class="group flex items-center justify-center rounded-xl border border-bone-dark bg-bone px-4 py-5 transition-all duration-300 hover:border-blue/20 hover:bg-white hover:shadow-md hover:shadow-navy/8">
+          <li class="group flex items-center justify-center rounded-xl border border-bone-dark bg-bone px-4 py-5 transition-all duration-300 [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:border-blue/20 [@media(hover:hover)]:hover:bg-white [@media(hover:hover)]:hover:shadow-xl [@media(hover:hover)]:hover:shadow-blue/10 active:scale-105 active:-translate-y-1 active:border-blue/20 active:bg-white active:shadow-xl active:shadow-blue/10 cursor-pointer select-none touch-manipulation">
             <Image
               src={brand.logo}
               alt={brand.name}
               height={80}
-              class="h-[80px] w-auto object-contain opacity-50 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              class="pointer-events-none h-[80px] w-auto object-contain transition-all duration-300 opacity-50 grayscale [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:grayscale-0 group-active:opacity-100 group-active:grayscale-0"
+              draggable="false"
             />
           </li>
         ))
