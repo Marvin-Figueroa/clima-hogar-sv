@@ -1,0 +1,92 @@
+---
+const testimonials = [
+  {
+    content:
+      'Excelente servicio. Instalaron el aire acondicionado en mi casa de forma rápida y limpia. Totalmente recomendados.',
+    author: 'María Salazar',
+    role: 'Cliente Residencial',
+    rating: 5,
+    type: 'persona',
+  },
+  {
+    content:
+      'Llevamos más de 5 años confiando en Clima Hogar para el mantenimiento de los equipos en nuestras oficinas. Su respuesta siempre es inmediata y profesional.',
+    author: 'Roberto Castillo',
+    role: 'Director de Operaciones, TechSolutions',
+    rating: 5,
+    type: 'empresa',
+  },
+  {
+    content:
+      'Atención de primera. Vinieron un domingo por una emergencia con nuestro equipo y solucionaron el problema ese mismo día. Excelente disposición.',
+    author: 'José Méndez',
+    role: 'Cliente Residencial',
+    rating: 5,
+    type: 'persona',
+  },
+  {
+    content:
+      'La mejor decisión fue contratarlos para nuestro proyecto comercial. Profesionalismo, asesoría adecuada y eficiencia desde el día uno del proyecto.',
+    author: 'Ana López',
+    role: 'Gerente General, Plaza Centro',
+    rating: 5,
+    type: 'empresa',
+  },
+];
+
+const renderStars = (rating: number) => {
+  return Array.from({ length: rating })
+    .map(
+      () =>
+        `<svg class="w-5 h-5 text-yellow-500 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>`
+    )
+    .join('');
+};
+---
+
+<section id="testimonios" class="relative overflow-hidden bg-white py-24">
+  <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <!-- Section header -->
+    <div class="mb-16 text-center">
+      <span
+        class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue"
+      >
+        Testimonios
+      </span>
+      <h2 class="font-display text-4xl font-bold leading-tight text-navy lg:text-5xl">
+        Lo que dicen nuestros clientes
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl font-body text-lg text-gray-500">
+        Más de <strong>15 años de experiencia</strong> y <strong>1,800 clientes satisfechos</strong> respaldan
+        nuestro compromiso con la calidad y el buen servicio.
+      </p>
+    </div>
+
+    <!-- Testimonials grid -->
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {
+        testimonials.map((testimonial) => (
+          <article class="flex flex-col justify-between rounded-2xl bg-bone p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-navy/10 border border-bone-dark/50">
+            <div>
+              <div class="mb-4 flex gap-1" set:html={renderStars(testimonial.rating)} />
+              <p class="mb-6 font-body text-base italic leading-relaxed text-gray-600">
+                "{testimonial.content}"
+              </p>
+            </div>
+            <div class="mt-auto border-t border-gray-200 pt-6">
+              <div class="flex items-center gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue text-white font-display font-bold text-xl">
+                  {testimonial.author.charAt(0)}
+                </div>
+                <div>
+                  <h3 class="font-display text-base font-bold text-navy">{testimonial.author}</h3>
+                  <p class="font-body text-xs text-gray-500">{testimonial.role}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
