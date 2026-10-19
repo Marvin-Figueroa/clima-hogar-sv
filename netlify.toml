@@ -25,23 +25,5 @@
   to     = "/gracias/"
   status = 301
 
-# Long-term cache for build assets — filenames are content-hashed by Astro/Vite,
-# so a new deploy always produces new URLs
-[[headers]]
-  for = "/_astro/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Security headers for every response
-# CSP: everything is self-hosted and Astro emits no inline scripts
-# (see vite.build.assetsInlineLimit in astro.config.mjs). JSON-LD blocks are not
-# executed, so script-src does not apply to them. Styles stay inline for faster
-# first paint, hence style-src 'unsafe-inline'.
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "DENY"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+# Response headers live in public/_headers: the GitHub Actions deploy does not
+# pass this file to Netlify, so [[headers]] here would be ignored.
