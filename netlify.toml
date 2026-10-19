@@ -24,3 +24,6 @@
   from   = "/gracias"
   to     = "/gracias/"
   status = 301
+
+# Response headers live in public/_headers: the GitHub Actions deploy does not
+# pass this file to Netlify, so [[headers]] here would be ignored.
