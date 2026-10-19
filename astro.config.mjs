@@ -17,5 +17,11 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Never inline scripts (or fonts) so the CSP can use script-src 'self'
+      // without 'unsafe-inline' (see netlify.toml). Returning undefined keeps the
+      // default 4 KB limit for everything else, so small stylesheets stay inline.
+      assetsInlineLimit: (filePath) => (/\.(js|woff2?)$/.test(filePath) ? false : undefined),
+    },
   },
 });
