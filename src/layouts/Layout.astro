@@ -30,8 +30,10 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta name="generator" content={Astro.generator} />
 
     <!-- ── Favicon ──────────────────────────────────────────────── -->
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- Google Search requires a square icon, ideally a multiple of 48px -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- ── SEO primario ─────────────────────────────────────────── -->
     <title>{title}</title>
