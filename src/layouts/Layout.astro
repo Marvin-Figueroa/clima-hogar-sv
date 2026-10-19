@@ -67,6 +67,9 @@ const imageUrl = new URL(image, Astro.site).href;
     <!-- ── Fuentes (preconnect antes que el import en global.css) ── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- ── Page-specific head content (e.g. structured data) ─────── -->
+    <slot name="head" />
   </head>
   <body class="bg-white font-body text-gray-900 antialiased">
     <slot />
