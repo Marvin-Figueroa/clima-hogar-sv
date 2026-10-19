@@ -28,14 +28,14 @@ const services = [
       <!-- Left column: header + trust signals -->
       <div class="flex flex-col justify-center">
         <span
-          class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue"
+          class="mb-4 inline-block font-body text-sm font-semibold uppercase tracking-widest text-blue-dark"
         >
           Asesoría y cotización personalizada
         </span>
         <h2 class="font-display text-4xl font-bold leading-tight text-navy lg:text-5xl">
           Cuéntanos qué<br />necesitas
         </h2>
-        <p class="mt-6 font-body text-lg leading-relaxed text-gray-500">
+        <p class="mt-6 font-body text-lg leading-relaxed text-gray-600">
           Completa el formulario y nuestro equipo te enviará una cotización personalizada. Brindamos
           atención en todo El Salvador.
         </p>
@@ -73,7 +73,7 @@ const services = [
         <!-- WhatsApp alternative -->
         <div class="mt-10 flex items-center gap-5">
           <div class="h-px flex-1 bg-bone-dark"></div>
-          <span class="font-body text-xs font-semibold uppercase tracking-widest text-gray-400"
+          <span class="font-body text-xs font-semibold uppercase tracking-widest text-gray-600"
             >o si prefieres</span
           >
           <div class="h-px flex-1 bg-bone-dark"></div>
@@ -105,7 +105,7 @@ const services = [
               Escríbenos por WhatsApp
               <span class="sr-only">(abre en nueva pestaña)</span>
             </p>
-            <p class="font-body text-xs text-gray-400">Respuesta inmediata</p>
+            <p class="font-body text-xs text-gray-500">Respuesta inmediata</p>
           </div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +150,7 @@ const services = [
             <!-- Nombre -->
             <div class="flex flex-col gap-1.5">
               <label for="nombre" class="font-body text-sm font-semibold text-navy">
-                Nombre completo <span class="text-blue" aria-hidden="true">*</span>
+                Nombre completo <span class="text-blue-dark" aria-hidden="true">*</span>
               </label>
               <input
                 id="nombre"
@@ -169,7 +169,6 @@ const services = [
                 id="error-nombre"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
-                aria-live="polite"
               >
               </p>
             </div>
@@ -177,7 +176,7 @@ const services = [
             <!-- Teléfono -->
             <div class="flex flex-col gap-1.5">
               <label for="telefono" class="font-body text-sm font-semibold text-navy">
-                Teléfono <span class="text-blue" aria-hidden="true">*</span>
+                Teléfono <span class="text-blue-dark" aria-hidden="true">*</span>
               </label>
               <input
                 id="telefono"
@@ -196,7 +195,6 @@ const services = [
                 id="error-telefono"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
-                aria-live="polite"
               >
               </p>
             </div>
@@ -204,7 +202,7 @@ const services = [
             <!-- Correo electrónico -->
             <div class="flex flex-col gap-1.5 sm:col-span-2">
               <label for="correo" class="font-body text-sm font-semibold text-navy">
-                Correo electrónico <span class="text-blue" aria-hidden="true">*</span>
+                Correo electrónico <span class="text-blue-dark" aria-hidden="true">*</span>
               </label>
               <input
                 id="correo"
@@ -223,7 +221,6 @@ const services = [
                 id="error-correo"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
-                aria-live="polite"
               >
               </p>
             </div>
@@ -231,7 +228,7 @@ const services = [
             <!-- Tipo de servicio -->
             <div class="flex flex-col gap-1.5">
               <label for="servicio" class="font-body text-sm font-semibold text-navy">
-                Tipo de servicio <span class="text-blue" aria-hidden="true">*</span>
+                Tipo de servicio <span class="text-blue-dark" aria-hidden="true">*</span>
               </label>
               <div class="relative">
                 <select
@@ -266,7 +263,6 @@ const services = [
                 id="error-servicio"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
-                aria-live="polite"
               >
               </p>
             </div>
@@ -291,7 +287,6 @@ const services = [
                 id="error-cantidad"
                 class="hidden mt-1.5 font-body text-xs text-red-500"
                 role="alert"
-                aria-live="polite"
               >
               </p>
             </div>
@@ -343,8 +338,8 @@ const services = [
           </div>
 
           <!-- Required fields note -->
-          <p class="mt-4 font-body text-xs text-gray-400">
-            <span class="text-blue" aria-hidden="true">*</span> Campos obligatorios
+          <p class="mt-4 font-body text-xs text-gray-500">
+            <span class="text-blue-dark" aria-hidden="true">*</span> Campos obligatorios
           </p>
 
           <!-- Submit -->
