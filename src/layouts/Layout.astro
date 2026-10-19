@@ -13,12 +13,13 @@ const {
   title = 'Clima Hogar SV — Instalación y Mantenimiento de Aire Acondicionado en El Salvador',
   description = 'Empresa especializada en instalación, mantenimiento y reparación de aires acondicionados en El Salvador. Técnicos certificados y presupuesto sin costo.',
   image = '/og-image.jpg',
-  canonicalUrl = Astro.url.href,
+  // Astro.url falls back to localhost at build time — always resolve against `site`
+  canonicalUrl = new URL(Astro.url.pathname, Astro.site).href,
   robots = 'index, follow',
 } = Astro.props;
 
 const siteName = 'Clima Hogar SV';
-const twitterHandle = '@climahogarsv';
+const imageUrl = new URL(image, Astro.site).href;
 ---
 
 <!doctype html>
@@ -47,18 +48,19 @@ const twitterHandle = '@climahogarsv';
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url).href} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Clima Hogar SV — Aire acondicionado en El Salvador" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="es_SV" />
 
     <!-- ── Twitter Card ─────────────────────────────────────────── -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.url).href} />
+    <meta name="twitter:image" content={imageUrl} />
 
     <!-- ── Fuentes (preconnect antes que el import en global.css) ── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
