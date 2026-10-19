@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+// Same hashed files global.css references, so the preload is reused by @font-face
+import soraLatin from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
+import nunitoLatin from '@fontsource-variable/nunito-sans/files/nunito-sans-latin-opsz-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -64,9 +67,9 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
 
-    <!-- ── Fuentes (preconnect antes que el import en global.css) ── -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- ── Fuentes (preload del subset latino usado above the fold) ── -->
+    <link rel="preload" href={soraLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={nunitoLatin} as="font" type="font/woff2" crossorigin />
 
     <!-- ── Page-specific head content (e.g. structured data) ─────── -->
     <slot name="head" />

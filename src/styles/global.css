@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;1,6..12,400&display=swap');
+/* Self-hosted variable fonts — bundled by Vite, no third-party request chain */
+@import '@fontsource-variable/sora';
+@import '@fontsource-variable/nunito-sans/opsz.css';
+@import '@fontsource-variable/nunito-sans/opsz-italic.css';
 @import 'tailwindcss';
 
 /*
@@ -53,9 +56,9 @@
   --color-gray-900: #0f172a;
 
   /* ── Typography ───────────────────────────────────────────────── */
-  --font-display: 'Sora', sans-serif;
+  --font-display: 'Sora Variable', sans-serif;
   /* Headlines, CTAs, nav */
-  --font-body: 'Nunito Sans', sans-serif;
+  --font-body: 'Nunito Sans Variable', sans-serif;
   /* Body text, labels, forms */
 
   /* ── Font sizes (major third scale — 1.25x) ──────────────────── */
