@@ -8,9 +8,45 @@ import Brands from '../components/Brands.astro';
 import WhyChooseUs from '../components/WhyChooseUs.astro';
 import AboutUs from '../components/AboutUs.astro';
 import QuoteForm from '../components/QuoteForm.astro';
+
+// Structured data — service-area business (on-site service only, no storefront),
+// so the address only carries the country. Keep in sync with the Google Business Profile.
+const site = Astro.site!;
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HVACBusiness',
+  '@id': new URL('/#business', site).href,
+  name: 'Clima Hogar SV',
+  legalName: 'Clima Hogar S.A.S. de C.V.',
+  description:
+    'Instalación, mantenimiento y reparación de aires acondicionados a domicilio en El Salvador.',
+  url: new URL('/', site).href,
+  logo: new URL('/icon-192.png', site).href,
+  image: new URL('/og-image.jpg', site).href,
+  telephone: '+503 7972-3918',
+  email: 'info@climahogarsv.com',
+  address: { '@type': 'PostalAddress', addressCountry: 'SV' },
+  areaServed: { '@type': 'Country', name: 'El Salvador' },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '08:00',
+      closes: '12:00',
+    },
+  ],
+  sameAs: ['https://www.facebook.com/share/1SaZdYyGrs/', 'https://www.tiktok.com/@clima.hogar6'],
+};
 ---
 
 <Layout>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(businessSchema)} />
   <Header />
   <main>
     <!-- Hero -->

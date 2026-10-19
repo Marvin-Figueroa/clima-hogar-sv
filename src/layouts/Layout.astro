@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+// Same hashed files global.css references, so the preload is reused by @font-face
+import soraLatin from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
+import nunitoLatin from '@fontsource-variable/nunito-sans/files/nunito-sans-latin-opsz-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -13,12 +16,13 @@ const {
   title = 'Clima Hogar SV — Instalación y Mantenimiento de Aire Acondicionado en El Salvador',
   description = 'Empresa especializada en instalación, mantenimiento y reparación de aires acondicionados en El Salvador. Técnicos certificados y presupuesto sin costo.',
   image = '/og-image.jpg',
-  canonicalUrl = Astro.url.href,
+  // Astro.url falls back to localhost at build time — always resolve against `site`
+  canonicalUrl = new URL(Astro.url.pathname, Astro.site).href,
   robots = 'index, follow',
 } = Astro.props;
 
 const siteName = 'Clima Hogar SV';
-const twitterHandle = '@climahogarsv';
+const imageUrl = new URL(image, Astro.site).href;
 ---
 
 <!doctype html>
@@ -29,8 +33,10 @@ const twitterHandle = '@climahogarsv';
     <meta name="generator" content={Astro.generator} />
 
     <!-- ── Favicon ──────────────────────────────────────────────── -->
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- Google Search requires a square icon, ideally a multiple of 48px -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- ── SEO primario ─────────────────────────────────────────── -->
     <title>{title}</title>
@@ -47,22 +53,26 @@ const twitterHandle = '@climahogarsv';
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url).href} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Clima Hogar SV — Aire acondicionado en El Salvador" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="es_SV" />
 
     <!-- ── Twitter Card ─────────────────────────────────────────── -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content={twitterHandle} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.url).href} />
+    <meta name="twitter:image" content={imageUrl} />
 
-    <!-- ── Fuentes (preconnect antes que el import en global.css) ── -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- ── Fuentes (preload del subset latino usado above the fold) ── -->
+    <link rel="preload" href={soraLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={nunitoLatin} as="font" type="font/woff2" crossorigin />
+
+    <!-- ── Page-specific head content (e.g. structured data) ─────── -->
+    <slot name="head" />
   </head>
   <body class="bg-white font-body text-gray-900 antialiased">
     <slot />
@@ -72,8 +82,7 @@ const twitterHandle = '@climahogarsv';
       id="back-to-top"
       type="button"
       aria-label="Volver al inicio de la página"
-      class="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-navy shadow-card-hover ring-1 ring-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:bg-navy-light hover:ring-cyan/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
-      style="pointer-events: none;"
+      class="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-navy shadow-card-hover ring-1 ring-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:bg-navy-light hover:ring-cyan/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan pointer-events-none opacity-0"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
